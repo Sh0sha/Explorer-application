@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
+
 namespace ExplorerApp
 {
     public partial class Form1 : Form
@@ -19,13 +20,7 @@ namespace ExplorerApp
         {
             InitializeComponent();
 
-            this.Load += Form1_Load;
-            textBox1.KeyDown += textBox1_KeyDown;
-            listView1.MouseDoubleClick += listView1_MouseDoubleClick;
-            button1.Click += button1_Click;
-            button4.Click += button4_Click;
-            button2.Click += button2_Click;
-            button3.Click += button3_Click;
+          
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -33,39 +28,46 @@ namespace ExplorerApp
             currentDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);     // Установка начальной директории на Рабочий стол
             UpdateDirectory(currentDirectory);                                                  // Обновление содержимого текущей директории
         }
+       
 
-    private void UpdateDirectory(string path)             // Директории
-        {
-           
+      // Операции с адресом директории
+
+    private void UpdateDirectory(string path)             
+        {    
             try
             {
-                currentDirectory = path;
+                currentDirectory = path;   
 
-                // Обновляем строку директории
+                // Обновляем строку директории 
+
                 textBox1.Text = currentDirectory;
 
+                // Очистка списка файлов и папок
 
-                // Clear the list view
                 listView1.Items.Clear();
 
-                // Add directories to the list view
+                // Получание списка папок в текущей директории
+
                 string[] directories = Directory.GetDirectories(currentDirectory);
+              
                 foreach (string directory in directories)
                 {
                     DirectoryInfo dirInfo = new DirectoryInfo(directory);
-                    ListViewItem item = new ListViewItem(dirInfo.Name);
+                    ListViewItem item = new ListViewItem(dirInfo.Name);   //  Добавление папки в список
                     item.SubItems.Add(dirInfo.CreationTime.ToString());
                     item.SubItems.Add(dirInfo.LastWriteTime.ToString());
                     item.SubItems.Add("Путь");
                     listView1.Items.Add(item);
                 }
 
-                // Add files to the list view
+                // Получение списка файлов в текущей директории
+
                 string[] files = Directory.GetFiles(currentDirectory);
                 foreach (string file in files)
                 {
                     FileInfo fileInfo = new FileInfo(file);
-                    ListViewItem item = new ListViewItem(fileInfo.Name);
+                    ListViewItem item = new ListViewItem(fileInfo.Name); // Добавление файла в список
+                    item.SubItems.Add("Файл");
                     item.SubItems.Add(fileInfo.CreationTime.ToString());
                     item.SubItems.Add(fileInfo.LastWriteTime.ToString());
                     item.SubItems.Add(fileInfo.Length.ToString());
@@ -82,12 +84,9 @@ namespace ExplorerApp
             }
         }
 
+       // Строка адреса директории
 
-        private void textBox1_TextChanged_1(object sender, EventArgs e)
-        { 
-
-        }
-        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)            
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -103,14 +102,17 @@ namespace ExplorerApp
                 }
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+        
+        // Фунция перехода на предыдущую директорию
+
+        private void button1_Click(object sender, EventArgs e)              
         {
-            string parentDirectory = Directory.GetParent(currentDirectory)?.FullName;
+            string parentDirectory = Directory.GetParent(currentDirectory)?.FullName;  // Получение родительской директории
 
             if (parentDirectory != null)
             {
-                currentDirectory = parentDirectory;
-                UpdateDirectory(currentDirectory);
+                currentDirectory = parentDirectory;         // Обновление текущей директории
+                UpdateDirectory(currentDirectory);           // Обновление содержимого текущей директории
             }
         }
 
@@ -119,38 +121,41 @@ namespace ExplorerApp
 
         }
 
-        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        // ГЛАВНОЕ окно с папками и файлами
+
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)            
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                string selectedItem = listView1.SelectedItems[0].Text;
-                string newPath = Path.Combine(currentDirectory, selectedItem);
+                string selectedItem = listView1.SelectedItems[0].Text;       // Получение имени выбранной папки 
+                string newPath = Path.Combine(currentDirectory, selectedItem);   // Создание нового пути к выбранной папке
 
                 if (Directory.Exists(newPath))
                 {
-                    currentDirectory = newPath;
-                    UpdateDirectory(currentDirectory);
+                    currentDirectory = newPath;   // Обновление текущей директории
+                    UpdateDirectory(currentDirectory);  // Обновление содержимого текущей директории
                 }
             }
         }
+            
+        //  Функция удаление файла или папки
 
-
-        private void button2_Click(object sender, EventArgs e)                  /// DELETE
+        private void button2_Click(object sender, EventArgs e)                  
         {
             if (listView1.SelectedItems.Count > 0)
             {
-                string selectedFile = listView1.SelectedItems[0].Text;
-                string filePath = Path.Combine(currentDirectory, selectedFile);
+                string selectedFile = listView1.SelectedItems[0].Text;   // Получение имени выбранного файла
+                string filePath = Path.Combine(currentDirectory, selectedFile);   // Создание пути к выбранному файлу
 
-                DialogResult result = MessageBox.Show("Вы уверены, что хотите удалить? ", "Потвердить Удаление", MessageBoxButtons.YesNo);
+                DialogResult result = MessageBox.Show("Вы уверены, что хотите удалить? ", "Потвердить Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
                     try
                     {
-                        File.Delete(filePath);
-                        UpdateDirectory(currentDirectory);
+                        File.Delete(filePath);  // Удаление файла
+                        UpdateDirectory(currentDirectory);   // Обновление содержимого текущей директории
                     }
-                    catch (UnauthorizedAccessException)
+                    catch (UnauthorizedAccessException)  // нет доступа
                     {
                         MessageBox.Show("У вас недостаточно прав!");
                     }
@@ -162,40 +167,26 @@ namespace ExplorerApp
             }
         }
 
+        //  Функция перемещения файла в другую папку
 
-        private List<string> SearchFiles(string directory, string searchQuery)
-        {
-            List<string> foundFiles = new List<string>();  // Specify the type argument as string
-
-            try
-            {
-                string[] files = Directory.GetFiles(directory, searchQuery, SearchOption.AllDirectories);
-                foundFiles.AddRange(files);
-            }
-            catch (Exception)
-            {
-                // Ignore any errors and continue the search
-            }
-
-            return foundFiles; ;
-        }
- private void button4_Click(object sender, EventArgs e)                 // MOVE
+        private void button4_Click(object sender, EventArgs e)         
         {
 
             if (listView1.SelectedItems.Count > 0)
             {
-                string selectedFile = listView1.SelectedItems[0].Text;
-                string sourcePath = Path.Combine(currentDirectory, selectedFile);
+                string selectedFile = listView1.SelectedItems[0].Text;              // Получение имени выбранного файла
+                string sourcePath = Path.Combine(currentDirectory, selectedFile);   // Создание пути к выбранному файлу
 
-                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+                if (folderBrowser.ShowDialog() == DialogResult.OK)
                 {
-                    string destinationPath = Path.Combine(folderBrowserDialog.SelectedPath, selectedFile);
+                    string destinationFolder = folderBrowser.SelectedPath;                           // Получение пути к целевой папке
+                    string destinationPath = Path.Combine(folderBrowser.SelectedPath, selectedFile);  // Создание пути к целевому файлу
 
                     try
                     {
-                        File.Move(sourcePath, destinationPath);
-                        UpdateDirectory(currentDirectory);
+                        File.Move(sourcePath, destinationPath);   // Перемещение файла
+                        UpdateDirectory(currentDirectory);         // Обновление содержимого текущей директории
                     }
                     catch (UnauthorizedAccessException)
                     {
@@ -203,36 +194,85 @@ namespace ExplorerApp
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Произошла ошибка в время перехода: " + ex.Message);
+                        MessageBox.Show("Произошла ошибка в время перехода: " + ex.Message, "ОШИБКА", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
+            
+        // Функция поиска 
 
-         private void button3_Click(object sender, EventArgs e)                             // FIND
+         private void button3_Click(object sender, EventArgs e)                             
         {
-            string searchQuery = textBox3.Text.Trim();
-
+            string searchQuery = textBox3.Text.Trim();    // Получение поискового запроса 
             if (!string.IsNullOrEmpty(searchQuery))
             {
-                List<string> foundFiles = SearchFiles(currentDirectory, searchQuery);
-                if (foundFiles.Count > 0)
+                try
                 {
-                    string message = "Найдены файлы, соответствующие критериям поиска:\n\n";
-                    message += string.Join("\n", foundFiles);
-                    MessageBox.Show(message);
+                    string[] matchingFiles = Directory.GetFiles(currentDirectory, searchQuery, SearchOption.AllDirectories); // Поиск файлов, соответствующих запросу
+
+                    if (matchingFiles.Length > 0)
+                    {
+                        listView1.Items.Clear();
+
+                        foreach (string file in matchingFiles)
+                        {
+                            FileInfo fileInfo = new FileInfo(file);
+                            ListViewItem item = new ListViewItem(fileInfo.Name); // Добавление найденных файлов в список
+                            item.SubItems.Add("Файл");
+                            item.SubItems.Add(fileInfo.CreationTime.ToString());
+                            item.SubItems.Add(fileInfo.LastWriteTime.ToString());
+                            item.SubItems.Add(fileInfo.Length.ToString());
+                            listView1.Items.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Файлы, соответствующие поисковому запросу, не найдены.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Файлы, соответствующие критериям поиска, не найдены");
+                    MessageBox.Show("Произошла ошибка при поиске файлов: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
+
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
         }
+
+        // Функция ручного выбора папки в диалоговом окне
+
+       private void button5_Click(object sender, EventArgs e)               
+       {
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                string searchFolder = folderBrowser.SelectedPath;            // Выбор папки для поиска
+
+                string[] files = Directory.GetFiles(searchFolder, "*", SearchOption.AllDirectories);   // Поиск всех файлов в папке и подпапках
+
+                listView1.Items.Clear();  // Очистка списка файлов и папок
+
+                foreach (string file in files)
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+                    ListViewItem item = new ListViewItem(fileInfo.Name);          // Добавление файла в список
+                    item.SubItems.Add("Файл");
+                    item.SubItems.Add(fileInfo.CreationTime.ToString());
+                    item.SubItems.Add(fileInfo.LastWriteTime.ToString());
+                    item.SubItems.Add(fileInfo.Length.ToString());
+                    listView1.Items.Add(item);
+                }
+            }
+        }
+
+
+
+
     }
 
 }
