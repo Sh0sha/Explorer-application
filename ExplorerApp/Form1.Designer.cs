@@ -43,7 +43,7 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(242, 28);
+            this.textBox1.Location = new System.Drawing.Point(242, 39);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(872, 22);
             this.textBox1.TabIndex = 0;
@@ -81,7 +81,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.Bisque;
             this.button2.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.Location = new System.Drawing.Point(79, 305);
+            this.button2.Location = new System.Drawing.Point(86, 409);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(87, 60);
             this.button2.TabIndex = 4;
@@ -97,7 +97,7 @@
             this.button3.Cursor = System.Windows.Forms.Cursors.Default;
             this.button3.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Location = new System.Drawing.Point(79, 140);
+            this.button3.Location = new System.Drawing.Point(86, 140);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(87, 46);
             this.button3.TabIndex = 5;
@@ -112,9 +112,9 @@
             this.button4.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button4.Location = new System.Drawing.Point(64, 235);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(114, 53);
+            this.button4.Size = new System.Drawing.Size(130, 53);
             this.button4.TabIndex = 6;
-            this.button4.Text = "Переместить";
+            this.button4.Text = "Переместить в";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             this.button4.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
@@ -122,7 +122,7 @@
             // textBox3
             // 
             this.textBox3.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.textBox3.Location = new System.Drawing.Point(12, 112);
+            this.textBox3.Location = new System.Drawing.Point(21, 112);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(215, 22);
             this.textBox3.TabIndex = 7;
@@ -144,11 +144,12 @@
             this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.label2.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(37, 87);
+            this.label2.Location = new System.Drawing.Point(46, 87);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(157, 22);
             this.label2.TabIndex = 8;
             this.label2.Text = "Введите для поиска";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -157,7 +158,7 @@
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.label3.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(272, 3);
+            this.label3.Location = new System.Drawing.Point(275, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 22);
             this.label3.TabIndex = 9;
@@ -165,12 +166,14 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(97, 421);
+            this.button5.BackColor = System.Drawing.Color.Bisque;
+            this.button5.Font = new System.Drawing.Font("Comic Sans MS", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button5.Location = new System.Drawing.Point(64, 303);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.Size = new System.Drawing.Size(130, 60);
             this.button5.TabIndex = 10;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Text = "Открыть в ";
+            this.button5.UseVisualStyleBackColor = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Form1
